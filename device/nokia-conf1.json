@@ -1,0 +1,562 @@
+{
+    "configure": {
+      "log": {
+        "filter": [
+          {
+            "entry": [
+              {
+                "action": "forward",
+                "description": "Collect only events of major severity or higher",
+                "entry-id": 10,
+                "match": {
+                  "severity": {
+                    "gte": "major"
+                  }
+                }
+              }
+            ],
+            "filter-id": 1001
+          }
+        ],
+        "log-id": [
+          {
+            "description": "Default System Log",
+            "destination": {
+              "memory": {
+                "max-entries": 500
+              }
+            },
+            "id": 99,
+            "source": {
+              "main": true
+            }
+          },
+          {
+            "description": "Default Serious Errors Log",
+            "destination": {
+              "memory": {
+                "max-entries": 500
+              }
+            },
+            "filter": 1001,
+            "id": 100,
+            "source": {
+              "main": true
+            }
+          }
+        ]
+      },
+      "multicast-management": {
+        "chassis-level": {
+          "per-mcast-plane-capacity": {
+            "mcast-capacity": {
+              "primary-percentage": "87.5",
+              "secondary-percentage": "87.5"
+            },
+            "redundant-mcast-capacity": {
+              "primary-percentage": "87.5",
+              "secondary-percentage": "87.5"
+            },
+            "total-capacity": "dynamic"
+          }
+        }
+      },
+      "service": {
+        "vprn": [
+          {
+            "customer": "1",
+            "interface": [
+              {
+                "admin-state": "enable",
+                "interface-name": "int123",
+                "ipv4": {
+                  "primary": {
+                    "address": "1.2.3.1",
+                    "prefix-length": 30
+                  }
+                }
+              },
+              {
+                "admin-state": "enable",
+                "interface-name": "lb",
+                "ipv4": {
+                  "primary": {
+                    "address": "2.2.2.2",
+                    "prefix-length": 32
+                  }
+                },
+                "loopback": true
+              }
+            ],
+            "service-name": "100"
+          }
+        ]
+      },
+      "system": {
+        "bluetooth": {
+          "advertising-timeout": 30
+        },
+        "grpc": {
+          "admin-state": "enable"
+        },
+        "management-interface": {
+          "configuration-mode": "model-driven"
+        },
+        "security": {
+          "aaa": {
+            "local-profiles": {
+              "profile": [
+                {
+                  "default-action": "permit-all",
+                  "entry": [
+                    {
+                      "action": "permit",
+                      "entry-id": 10,
+                      "match": "configure system security"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 20,
+                      "match": "show system security"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 30,
+                      "match": "tools perform security"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 40,
+                      "match": "tools dump security"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 50,
+                      "match": "admin system security"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 100,
+                      "match": "configure li"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 110,
+                      "match": "show li"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 111,
+                      "match": "clear li"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 112,
+                      "match": "tools dump li"
+                    }
+                  ],
+                  "user-profile-name": "administrative"
+                },
+                {
+                  "entry": [
+                    {
+                      "action": "permit",
+                      "entry-id": 10,
+                      "match": "exec"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 20,
+                      "match": "exit"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 30,
+                      "match": "help"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 40,
+                      "match": "logout"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 50,
+                      "match": "password"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 60,
+                      "match": "show config"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 65,
+                      "match": "show li"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 66,
+                      "match": "clear li"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 67,
+                      "match": "tools dump li"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 70,
+                      "match": "show"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 80,
+                      "match": "enable-admin"
+                    },
+                    {
+                      "action": "permit",
+                      "entry-id": 90,
+                      "match": "enable"
+                    },
+                    {
+                      "action": "deny",
+                      "entry-id": 100,
+                      "match": "configure li"
+                    }
+                  ],
+                  "user-profile-name": "default"
+                }
+              ]
+            }
+          },
+          "pki": {
+            "ca-profile": [
+              {
+                "admin-state": "enable",
+                "ca-profile-name": "tls-ca",
+                "cert-file": "cacert.crt",
+                "crl-file": "cacrl.crt"
+              }
+            ]
+          },
+          "ssh": {
+            "client-cipher-list-v1": {
+              "cipher": [
+                {
+                  "index": 200,
+                  "name": "3des"
+                },
+                {
+                  "index": 205,
+                  "name": "blowfish"
+                },
+                {
+                  "index": 210,
+                  "name": "des"
+                }
+              ]
+            },
+            "client-cipher-list-v2": {
+              "cipher": [
+                {
+                  "index": 190,
+                  "name": "aes256-ctr"
+                },
+                {
+                  "index": 192,
+                  "name": "aes192-ctr"
+                },
+                {
+                  "index": 194,
+                  "name": "aes128-ctr"
+                },
+                {
+                  "index": 200,
+                  "name": "aes128-cbc"
+                },
+                {
+                  "index": 205,
+                  "name": "3des-cbc"
+                },
+                {
+                  "index": 210,
+                  "name": "blowfish-cbc"
+                },
+                {
+                  "index": 215,
+                  "name": "cast128-cbc"
+                },
+                {
+                  "index": 220,
+                  "name": "arcfour"
+                },
+                {
+                  "index": 225,
+                  "name": "aes192-cbc"
+                },
+                {
+                  "index": 230,
+                  "name": "aes256-cbc"
+                },
+                {
+                  "index": 235,
+                  "name": "rijndael-cbc"
+                }
+              ]
+            },
+            "client-mac-list-v2": {
+              "mac": [
+                {
+                  "index": 200,
+                  "name": "hmac-sha2-512"
+                },
+                {
+                  "index": 210,
+                  "name": "hmac-sha2-256"
+                },
+                {
+                  "index": 215,
+                  "name": "hmac-sha1"
+                },
+                {
+                  "index": 220,
+                  "name": "hmac-sha1-96"
+                },
+                {
+                  "index": 225,
+                  "name": "hmac-md5"
+                },
+                {
+                  "index": 230,
+                  "name": "hmac-ripemd160"
+                },
+                {
+                  "index": 235,
+                  "name": "hmac-ripemd160-openssh-com"
+                },
+                {
+                  "index": 240,
+                  "name": "hmac-md5-96"
+                }
+              ]
+            },
+            "server-cipher-list-v1": {
+              "cipher": [
+                {
+                  "index": 200,
+                  "name": "3des"
+                },
+                {
+                  "index": 205,
+                  "name": "blowfish"
+                }
+              ]
+            },
+            "server-cipher-list-v2": {
+              "cipher": [
+                {
+                  "index": 190,
+                  "name": "aes256-ctr"
+                },
+                {
+                  "index": 192,
+                  "name": "aes192-ctr"
+                },
+                {
+                  "index": 194,
+                  "name": "aes128-ctr"
+                },
+                {
+                  "index": 200,
+                  "name": "aes128-cbc"
+                },
+                {
+                  "index": 205,
+                  "name": "3des-cbc"
+                },
+                {
+                  "index": 210,
+                  "name": "blowfish-cbc"
+                },
+                {
+                  "index": 215,
+                  "name": "cast128-cbc"
+                },
+                {
+                  "index": 220,
+                  "name": "arcfour"
+                },
+                {
+                  "index": 225,
+                  "name": "aes192-cbc"
+                },
+                {
+                  "index": 230,
+                  "name": "aes256-cbc"
+                },
+                {
+                  "index": 235,
+                  "name": "rijndael-cbc"
+                }
+              ]
+            },
+            "server-mac-list-v2": {
+              "mac": [
+                {
+                  "index": 200,
+                  "name": "hmac-sha2-512"
+                },
+                {
+                  "index": 210,
+                  "name": "hmac-sha2-256"
+                },
+                {
+                  "index": 215,
+                  "name": "hmac-sha1"
+                },
+                {
+                  "index": 220,
+                  "name": "hmac-sha1-96"
+                },
+                {
+                  "index": 225,
+                  "name": "hmac-md5"
+                },
+                {
+                  "index": 230,
+                  "name": "hmac-ripemd160"
+                },
+                {
+                  "index": 235,
+                  "name": "hmac-ripemd160-openssh-com"
+                },
+                {
+                  "index": 240,
+                  "name": "hmac-md5-96"
+                }
+              ]
+            }
+          },
+          "tls": {
+            "cert-profile": [
+              {
+                "admin-state": "enable",
+                "cert-profile-name": "grpc-tls-certs",
+                "entry": [
+                  {
+                    "certificate-file": "cert.crt",
+                    "entry-id": 1,
+                    "key-file": "key.crt"
+                  }
+                ]
+              }
+            ],
+            "client-cipher-list": [
+              {
+                "cipher": [
+                  {
+                    "index": 1,
+                    "name": "tls-rsa-with3des-ede-cbc-sha"
+                  },
+                  {
+                    "index": 2,
+                    "name": "tls-rsa-with-aes128-cbc-sha"
+                  },
+                  {
+                    "index": 3,
+                    "name": "tls-rsa-with-aes256-cbc-sha"
+                  },
+                  {
+                    "index": 4,
+                    "name": "tls-rsa-with-aes128-cbc-sha256"
+                  },
+                  {
+                    "index": 5,
+                    "name": "tls-rsa-with-aes256-cbc-sha256"
+                  }
+                ],
+                "client-cipher-list-name": "grpc-cipher-list"
+              }
+            ],
+            "client-tls-profile": [
+              {
+                "admin-state": "enable",
+                "cert-profile": "grpc-tls-certs",
+                "cipher-list": "grpc-cipher-list",
+                "client-profile-name": "grpc-client-profile"
+              }
+            ],
+            "server-cipher-list": [
+              {
+                "cipher": [
+                  {
+                    "index": 1,
+                    "name": "tls-rsa-with3des-ede-cbc-sha"
+                  },
+                  {
+                    "index": 2,
+                    "name": "tls-rsa-with-aes128-cbc-sha"
+                  },
+                  {
+                    "index": 3,
+                    "name": "tls-rsa-with-aes256-cbc-sha"
+                  },
+                  {
+                    "index": 4,
+                    "name": "tls-rsa-with-aes128-cbc-sha256"
+                  },
+                  {
+                    "index": 5,
+                    "name": "tls-rsa-with-aes256-cbc-sha256"
+                  }
+                ],
+                "server-cipher-list-name": "grpc-cipher-list"
+              }
+            ],
+            "server-tls-profile": [
+              {
+                "admin-state": "enable",
+                "authenticate-client": {
+                  "trust-anchor-profile": "grpc-trust-anchor"
+                },
+                "cert-profile": "grpc-tls-certs",
+                "cipher-list": "grpc-cipher-list",
+                "server-profile-name": "grpc-tls-profile"
+              }
+            ],
+            "trust-anchor-profile": [
+              {
+                "trust-anchor": [
+                  {
+                    "ca-profile-name": "tls-ca"
+                  }
+                ],
+                "trust-anchor-profile-name": "grpc-trust-anchor"
+              }
+            ]
+          },
+          "user-params": {
+            "local-user": {
+              "user": [
+                {
+                  "access": {
+                    "console": true,
+                    "grpc": true
+                  },
+                  "console": {
+                    "member": [
+                      "administrative"
+                    ]
+                  },
+                  "password": "$2y$10$TQrZlpBDra86.qoexZUzQeBXDY1FcdDhGWdD9lLxMuFyPVSm0OGy6",
+                  "user-name": "admin"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+  
