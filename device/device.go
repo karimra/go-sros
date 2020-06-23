@@ -31,8 +31,6 @@ func main() {
 
 	d1 := new(gosros.Device)
 	d2 := new(gosros.Device)
-	ygot.BuildEmptyTree(d1)
-	ygot.BuildEmptyTree(d2)
 	err = gosros.Unmarshal(b1, d1)
 	if err != nil {
 		panic(err)
@@ -41,8 +39,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	ygot.BuildEmptyTree(d1)
 
 	if !cmp.Equal(d1, d2) {
 		fmt.Println("- configurations differ")
