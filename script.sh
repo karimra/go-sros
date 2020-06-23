@@ -1,0 +1,1 @@
+generator -package_name=gosros -generate_fakeroot yang/*
