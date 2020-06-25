@@ -1,0 +1,35 @@
+{
+    "configure": {
+        "port": [
+            {
+                "port-id": "1/1/1",
+                "admin-state": "disable",
+                "ethernet": {
+                    "encap-type": "dot1q",
+                    "lldp": {
+                        "dest-mac": [
+                            {
+                                "mac-type": "nearest-bridge",
+                                "notification": true,
+                                "receive": true,
+                                "transmit": true,
+                                "tx-tlvs": {
+                                    "port-desc": true,
+                                    "sys-name": true,
+                                    "sys-desc": true,
+                                    "sys-cap": true
+                                },
+                                "tx-mgmt-address": [
+                                    {
+                                        "mgmt-address-system-type": "system",
+                                        "admin-state": "enable"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

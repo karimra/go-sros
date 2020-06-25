@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/google/go-cmp/cmp"
 	gosros "github.com/karimra/go-sros"
 	"github.com/openconfig/ygot/ygot"
@@ -35,6 +36,22 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	spew.Dump(d1)
+
+	s, err := ygot.EmitJSON(d1, &ygot.EmitJSONConfig{
+		Format: ygot.RFC7951,
+		Indent: "  ",
+		RFC7951Config: &ygot.RFC7951JSONConfig{
+			AppendModuleName: true,
+		},
+		ValidationOpts: []ygot.ValidationOption{
+			&ytypes.LeafrefOptions{IgnoreMissingData: true},
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(s)
 	err = gosros.Unmarshal(b2, d2)
 	if err != nil {
 		panic(err)
@@ -72,4 +89,13 @@ func main() {
 	}
 	fmt.Println("- gnmi notification with config delta:")
 	fmt.Println(prototext.Format(gnmiNotif))
+
+	fmt.Println("- gnmi notifications from first file:")
+	notifs, err := ygot.TogNMINotifications(d1, 0, ygot.GNMINotificationsConfig{UsePathElem: true})
+	if err != nil {
+		panic(err)
+	}
+	for _, n := range notifs {
+		fmt.Println(prototext.Format(n))
+	}
 }
